@@ -1,18 +1,28 @@
 package localApplication;
 
+import com.google.common.collect.ImmutableMap;
 import io.appium.java_client.AppiumBy;
-import org.openqa.selenium.By;
-import org.openqa.selenium.DeviceRotation;
-import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
+import io.appium.java_client.android.Activity;
+import io.appium.java_client.android.nativekey.AndroidKey;
+import io.appium.java_client.android.nativekey.KeyEvent;
+import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.sql.Driver;
 
 public class MobileFeaturesExample extends AppiumConfiguration{
     @Test
     public void MobileFeatures(){
-        driver.findElement(AppiumBy.accessibilityId("Preference")).click();
-        driver.findElement(AppiumBy.accessibilityId("3. Preference dependencies")).click();
+        //make sure the amulator is running by --> adb devices
+        // find activity in window by --> adb shell dumpsys window | findstr "mCurrentFocus"
+        ((JavascriptExecutor) driver).executeScript("mobile: startActivity", ImmutableMap.of("intent",
+                "io.appium.android.apis/io.appium.android.apis.preference.PreferenceDependencies"));
+
+        //The below lines are commented because as we mentioned the upper piece of code will start from the activity
+
+//        driver.findElement(AppiumBy.accessibilityId("Preference")).click();
+//        driver.findElement(AppiumBy.accessibilityId("3. Preference dependencies")).click();
         WebElement checkBox = driver.findElement(By.id("android:id/checkbox"));
         checkBox.click();
         String checked = checkBox.getDomAttribute("checked");
@@ -26,6 +36,8 @@ public class MobileFeaturesExample extends AppiumConfiguration{
         WifiSettingBox.isDisplayed();
 
         driver.findElement(By.id("android:id/edit")).sendKeys("Haseeb");
+        driver.hideKeyboard();
+
         driver.findElement(By.id("android:id/button1")).click();
 
         try{
@@ -35,6 +47,8 @@ public class MobileFeaturesExample extends AppiumConfiguration{
         catch (NoSuchElementException e){
             System.out.println("Wifi Settings added");
         }
+
+        driver.pressKey(new KeyEvent(AndroidKey.HOME));
 
     }
 }

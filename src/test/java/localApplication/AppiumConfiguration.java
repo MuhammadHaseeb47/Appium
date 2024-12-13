@@ -23,20 +23,21 @@ public class AppiumConfiguration {
     public AppiumDriverLocalService service;
     public AndroidDriver driver;
 
+//    String Ip = "192.168.100.28";
+    String Ip = "192.168.0.104";
 
     @BeforeClass
     public void StartAppium() throws URISyntaxException, MalformedURLException {
 
-//192.168.100.28
-        //192.168.0.104
     service= new AppiumServiceBuilder().withAppiumJS(new File("C:\\\\Users\\\\mspam\\\\AppData\\\\Roaming\\\\npm\\\\node_modules\\\\appium\\\\build\\\\lib\\\\main.js")).
-                withIPAddress("192.168.100.28").usingPort(4723).build();
+                withIPAddress(Ip).usingPort(4723).build();
     service.start();
 
         UiAutomator2Options options = new UiAutomator2Options();
         options.setDeviceName("MobileName");
-        options.setApp("D:\\PracticeWithRahulShetty\\src\\test\\java\\resources\\ApiDemos-debug.apk");
-        driver = new AndroidDriver(new URI("http://192.168.100.28:4723").toURL(), options);
+//        options.setApp("D:\\Appium\\src\\test\\java\\resources\\ApiDemos-debug.apk");
+        options.setApp("D:\\Appium\\src\\test\\java\\resources\\General-Store.apk");
+        driver = new AndroidDriver(new URI("http://"+ Ip+":4723").toURL(), options);
         }
 
     public void LongClickGesture(WebElement ele){
